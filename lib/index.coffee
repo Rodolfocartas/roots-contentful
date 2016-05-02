@@ -191,7 +191,8 @@ module.exports = (opts) ->
       W.map types, (t) =>
         if not t.template then return W.resolve()
         W.map t.content, (entry) =>
-          template = path.join(@roots.root, t.template)
+          templateFile = if typeof t.template is 'function' then t.template(entry) else t.template
+          template = path.join(@roots.root, t.templateFile)
           compiler = _.find @roots.config.compilers, (c) ->
             _.contains(c.extensions, path.extname(template).substring(1))
           W.map entry._urls, (url) =>
